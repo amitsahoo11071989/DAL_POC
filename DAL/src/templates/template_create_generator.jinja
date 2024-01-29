@@ -1,0 +1,6 @@
+CREATE DYNAMIC TABLE {{config["target_table_name"]}}
+TARGET_LAG = {{"\'"}}{{config["target_lag"]}}{{"\'"}}
+WAREHOUSE = {{"\'"}}{{config["warehouse"]}}{{"\'"}}
+AS
+{% include "template_sql_generator.jinja" %}
+LIMIT 200;

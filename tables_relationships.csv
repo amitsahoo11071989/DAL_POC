@@ -1,0 +1,5 @@
+Database1,Schema1,Table1,Database2,Schema2,Table2,Condition
+EDW,EDW,Policy_table,EDW,EDW,Policy_Transaction,policy_id=policy_id
+EDW,EDW,Policy_Coverage,EDW,EDW,Policy_table,transaction_id=transaction_id
+EDW,EDW,CLAIM,EDW,EDW,CLAIM_TRANSACTION,CLAIM_ID=CLAIM_ID
+EDW,EDW,CLAIM_TRANSACTION,EDW,EDW,CLAIM_HEADER,CLAIM_TRANSACTION_ID=CLAIM_HEADER_ID
