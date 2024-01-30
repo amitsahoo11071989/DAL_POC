@@ -51,9 +51,6 @@ def get_full_table_name(json_data):
     return list(chain(*table_list))
 
 
-    import sys
-
-
 def query_yes_no(question, default="no"):
     """Ask a yes/no question via raw_input() and return their answer.
 
@@ -64,7 +61,7 @@ def query_yes_no(question, default="no"):
 
     The "answer" return value is True for "yes" or False for "no".
     """
-    valid = {"yes": "True", "y": "True", "ye": "True", "no": "False", "n": "False"}
+    valid = {"yes": True, "y": True, "ye": True, "no": False, "n": False}
     if default is None:
         prompt = " [y/n] "
     elif default == "yes":

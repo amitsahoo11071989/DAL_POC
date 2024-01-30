@@ -1,5 +1,4 @@
 import sys
-
 from src.utilities import snowflake_connector as sc
 from src.utilities.exceptions import CustomException
 

@@ -20,7 +20,6 @@ def dynamic_sql_query(json_file, csv_file):
 
 def generate_sql_query(json_data, relationships_df):
     try:
-
         json_tables = get_full_table_name(json_data)
         
         relevant_relationships_df = relationships_df[
