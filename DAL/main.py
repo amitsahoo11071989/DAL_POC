@@ -2,10 +2,10 @@ import sys
 import os
 import colorama
 
-from src.utilities import get_directory_path
+from src.utilities import get_directory_path, query_yes_no
 from src.utilities import snowflake_connector as sc
 from src.utilities.exceptions import CustomException
-from src.cli import dynamic_sql_query
+from src.cli import dynamic_sql_query, execute_query
 from src.cli import argument_parser
 
 colorama.init()
@@ -23,29 +23,21 @@ def main():
                                   json_file,
                                   relation_csv_dir_path)
     
-    review_query = input("\n\nGenerated SQL Query:\n\n\n" + "\33[33m" + sql_query + "\33[0m" +"\n\nProceed to execute the query? (y/n): ").lower()
+    review_query = "\n\nGenerated SQL Query:\n\n\n" + "\33[33m" + sql_query + "\33[0m"
+    sys.stdout.write(review_query)
+
+    sys.stdout.write(query_yes_no("\n\n Proceed to execute the query?"))
+
+
     
     
-    print(review_query)
-    if review_query == 'y':
-            execute_query(sql_query)
-    else:
-        sys.stdout.write("SQL query execution aborted.")
+    # print(review_query)
+    # if review_query == 'y':
+    #         execute_query(sql_query)
+    # else:
+    #     sys.stdout.write("SQL query execution aborted.")
 
 
-def execute_query(sql_query):
-    try:
-        conn = sc.open_connection()
-        cursor = conn.cursor()
-        cursor.execute(sql_query)
-        results = cursor.fetchall()
-        for row in results:
-            sys.stdout.write(f"\33[92m {row[0]} \33[0m")
-        cursor.close()
-        sc.close_connection(conn)
-
-    except Exception as e:
-         raise CustomException(e)
 
 
 if __name__ == "__main__":
