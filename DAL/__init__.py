@@ -1,1 +1,1 @@
-from .src.utilities import get_parent_directory
+from .src.utilities import get_directory_path
