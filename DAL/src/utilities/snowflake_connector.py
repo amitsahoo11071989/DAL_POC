@@ -1,8 +1,8 @@
 import snowflake.connector
 
-account = 'argo'
-user = 'AMIT'
-password = '***'
+account = ""
+user = ""
+password = ""
 
 def open_connection():
 

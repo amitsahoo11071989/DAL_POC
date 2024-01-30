@@ -26,8 +26,8 @@ def get_full_relationship(df):
 
     df[["left_column", "right_column"]] = df['Condition'].str.split('=', expand=True)
 
-    df['full_left_column'] = df[["Database1", "Schema1", "left_column"]].apply(lambda x: '.'.join(x.values), axis=1)
-    df['full_right_column'] = df[["Database2", "Schema2", "right_column"]].apply(lambda x: '.'.join(x.values), axis=1)
+    df['full_left_column'] = df[["full_name_table1", "left_column"]].apply(lambda x: '.'.join(x.values), axis=1)
+    df['full_right_column'] = df[["full_name_table2", "right_column"]].apply(lambda x: '.'.join(x.values), axis=1)
 
     df['join_condition'] = df.apply(lambda x: '%s = %s' % (x['full_left_column'], x['full_right_column']), axis=1)
     return df

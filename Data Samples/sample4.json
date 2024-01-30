@@ -1,0 +1,30 @@
+{
+    "target_table_name": "POLICY_TESTING_DYNAMIC_TABLE_1",
+    "target_lag": "300",
+    "warehouse": "DAL_ALL_IT_CONSUMER_WH",
+    "source_data": [
+        {
+            "database": "EDW",
+            "schema": "EDW",
+            "table_column_mapping": {
+                "POLICY": [
+                    "POLICY_NUMBER",
+                    "POLICY_TYPE",
+                    "POLICY_EFFECTIVE_DATE",
+                    "POLICY_EXPIRATION_DATE",
+                    "POLICY_CANCELLATION_DATE"
+                ],
+                "POLICY_TRANSACTION": [
+                    "TRANSACTION_DATE",
+                    "COMMISSION_AMOUNT",
+                    "FEE_AMOUNT",
+                    "POLICY_COVERAGE_KEY",
+                    "TAX_AMOUNT"
+                ],
+                "UNEARNED_PREMIUM_TRANSACTION": [
+                    "UNEARNED_PREMIUM"
+                ]
+            }
+        }
+    ]
+}

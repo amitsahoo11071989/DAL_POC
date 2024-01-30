@@ -1,5 +1,5 @@
 {
-    "target_table_name": "CLAIM_TESTING_2",
+    "target_table_name": "CLAIM_TESTING_7",
     "target_lag": "300",
     "warehouse": "DAL_ALL_IT_CONSUMER_WH",
     "source_data": [
@@ -22,9 +22,6 @@
                     "CLAIM_TRANSACTION_KEY",
                     "CLAIM_TRANSACTION_TYPE_CODE",
                     "INSERTED_USER"
-                ],
-                "CLAIM_HEADER": [
-                    "CLAIM_HEADER_ID"
                 ]
             }
         }
