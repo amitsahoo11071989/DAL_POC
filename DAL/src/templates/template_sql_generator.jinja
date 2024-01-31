@@ -5,15 +5,7 @@ SELECT {{' '}}
             {{data['database']}}.{{data['schema']}}.{{table}}.{{column}}{{', ' if not loop.last}}
         {%- endfor -%}{{',' if not loop.last}}
     {%- endfor -%}{{' '}}
-    FROM {{ relevant_relationships_df.iloc[0]['full_name_table1'] }}
-    {%- set join_conditions = [] -%}
-    {%- for _, relationship in relevant_relationships_df.iterrows() -%}
-        {%- set join_conditions = join_conditions.append(' JOIN {} ON {}'.format(relationship['full_name_table2'], relationship['join_condition'])) -%}
-    {%- endfor -%}
-    {{' '.join(join_conditions)}}
+    FROM 
+    {{json_tables[0]}}
+    {{' '.join(final_joining_conditions)}}
 {%- endfor -%}
-
-
-
-
-
