@@ -1,5 +1,6 @@
 import os
-
+import itertools
+import pandas as pd
 from jinja2 import Environment, FileSystemLoader
 from src.utilities.utils import (
     get_directory_path,
@@ -21,14 +22,21 @@ def dynamic_sql_query(json_file, csv_file):
 def generate_sql_query(json_data, relationships_df):
     try:
         json_tables = get_full_table_name(json_data)
-        
-        relevant_relationships_df = relationships_df[
-            (relationships_df['full_name_table1'].isin(json_tables)) &
-            (relationships_df['full_name_table2'].isin(json_tables))
-            ]
 
-        if len(json_tables) == len(relevant_relationships_df):
-            relevant_relationships_df = relevant_relationships_df.drop(len(relevant_relationships_df) - 1, axis='index')
+        possible_combinations_tables = list(itertools.permutations(json_tables, 2))
+
+        possible_combination_df = pd.DataFrame(possible_combinations_tables, 
+                                               columns =['full_name_table1', 'full_name_table2'])
+        
+        relevant_df = pd.merge(possible_combination_df, relationships_df, on=["full_name_table1", "full_name_table2"], how='inner')
+        
+        # relevant_relationships_df = relationships_df[
+        #     (relationships_df['full_name_table1'].isin(json_tables)) &
+        #     (relationships_df['full_name_table2'].isin(json_tables))
+        #     ]
+
+        # if len(json_tables) == len(relevant_relationships_df):
+        #     relevant_relationships_df = relevant_relationships_df.drop(len(relevant_relationships_df) - 1, axis='index')
 
         templates_directory_path = get_directory_path(
             path=str(os.path.dirname(__file__)),

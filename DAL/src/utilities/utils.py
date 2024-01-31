@@ -31,6 +31,8 @@ def get_full_relationship(df):
     df['full_right_column'] = df[["full_name_table2", "right_column"]].apply(lambda x: '.'.join(x.values), axis=1)
 
     df['join_condition'] = df.apply(lambda x: '%s = %s' % (x['full_left_column'], x['full_right_column']), axis=1)
+
+    df = df[["full_name_table1", "full_name_table2", "join_condition"]]
     return df
 
 
