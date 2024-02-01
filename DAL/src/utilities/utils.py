@@ -45,11 +45,11 @@ def read_csv(csv_file):
 
 def get_full_table_name(json_data):
     table_list = []
-    for i in json_data["source_data"]:
-        database = i["database"]
-        schema = i["schema"]
+    for i in json_data:
+        database = json_data["database"]
+        schema = json_data["schema"]
         table_list.append(
-            list(map(lambda table: f"{database}.{schema}.{table}", list(i["table_column_mapping"].keys()))))
+            list(map(lambda table: f"{database}.{schema}.{table}", list(json_data["table_column_mapping"].keys()))))
     return list(chain(*table_list))
 
 
