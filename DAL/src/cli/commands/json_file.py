@@ -35,12 +35,28 @@ def generate_sql_query(json_data, relationships_df):
             directory_name="templates"
         )
 
+
+        def get_join_string_for_each_pair(tup):
+            result = relevant_df.loc[(((relevant_df['full_name_table1']==tup[0]) & (relevant_df['full_name_table2']==tup[1])) | ((relevant_df['full_name_table2']==tup[0]) & (relevant_df['full_name_table1']==tup[1]))),'join_condition'].item()
+            return f' JOIN {tup[1]} ON {result}'
+        
+
+        ordered_pairwise_tables_list = list(zip(json_tables,json_tables[1:]))
+        joins_string_list = [get_join_string_for_each_pair(i) for i in ordered_pairwise_tables_list]
+        joins_string = '\n'.join(joins_string_list)
+
+
+
+
+        
+
         env = Environment(loader=FileSystemLoader(templates_directory_path))
         template = env.get_template('template_create_generator.jinja')
 
         rendered_query = template.render(
             config=json_data,
-            relevant_df=relevant_df
+            json_tables = json_tables,
+            joins_string = joins_string
         )
 
         return ' '.join(rendered_query.split('\n'))
