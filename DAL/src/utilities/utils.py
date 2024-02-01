@@ -5,12 +5,12 @@ from itertools import chain
 import os
 import sys
 
-def get_directory_path(path, levels, directory_name):
-    path_splits = path.split('\\')[:-levels]
-    return_str = ''
-    for element in path_splits:
-        return_str += element + '\\'
-    return os.path.join(return_str.rstrip('\\'), directory_name)
+def get_file_path(path, levels, file_name):
+    path = os.path.normpath(path)
+    new_path = os.path.join(os.path.join(path, *([os.pardir] * levels)), file_name)
+
+    return os.path.normpath(new_path)
+
 
 def read_json(json_file):
     try:
