@@ -28,7 +28,9 @@ def main():
     boolean_input = query_yes_no("\n\n Proceed to execute the query?")
 
     if boolean_input:
-        execute_query(sql_query)
+        results = execute_query(sql_query)
+        for row in results:
+            sys.stdout.write(f"\33[92m {row[0]} \33[0m")
     else:
         sys.stdout.write("SQL query execution aborted.")
 
