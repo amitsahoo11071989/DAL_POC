@@ -26,12 +26,12 @@ def dynamic_sql_query(json_file, csv_file):
 
 def validate_json_data(json_data):
 
-    templates_directory_path = get_directory_path(
+    templates_file_path = get_file_path(
             path=str(os.path.dirname(__file__)),
             levels=2,
-            directory_name="templates")
+            file_name="templates")
     
-    env = Environment(loader=FileSystemLoader(templates_directory_path))
+    env = Environment(loader=FileSystemLoader(templates_file_path))
     template = env.get_template('template_show_columns.jinja')
     
     for data in json_data["source_data"]:

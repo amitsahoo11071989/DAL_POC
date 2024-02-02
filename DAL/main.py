@@ -14,7 +14,7 @@ def main():
                                                levels=1,
                                                file_name="tables_relationships.csv")
 
-    # args=argument_parser()
+    args=argument_parser()
     json_file = get_file_path(path=str(os.path.dirname(__file__)),
                                                levels=1,
                                                file_name="Data_Samples/sample3.json")
