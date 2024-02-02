@@ -1,1 +1,1 @@
-from .src.utilities import get_directory_path, query_yes_no
+from .src.utilities import get_file_path, query_yes_no

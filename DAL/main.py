@@ -2,7 +2,7 @@ import sys
 import os
 import colorama
 
-from src.utilities import get_directory_path, query_yes_no
+from src.utilities import get_file_path, query_yes_no
 from src.cli import dynamic_sql_query, execute_query
 from src.cli import argument_parser
 
@@ -10,13 +10,15 @@ colorama.init()
 
 
 def main():
-    relation_csv_dir_path = get_directory_path(path=str(os.path.dirname(__file__)),
+    relation_csv_dir_path = get_file_path(path=str(os.path.dirname(__file__)),
                                                levels=1,
-                                               directory_name="tables_relationships.csv")
+                                               file_name="tables_relationships.csv")
 
-    args=argument_parser()
-
-    json_file = r"C:\Users\amit.sahoo\OneDrive - Argo Group\DAL\SOURCE_CODE\DAL\Data Samples\sample3.json"
+    # args=argument_parser()
+    json_file = get_file_path(path=str(os.path.dirname(__file__)),
+                                               levels=1,
+                                               file_name="Data_Samples/sample3.json")
+    
 
     sql_query = dynamic_sql_query(json_file if args.json_file is None else args.json_file,
                                   relation_csv_dir_path)

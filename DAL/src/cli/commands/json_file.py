@@ -5,7 +5,7 @@ import sys
 from jinja2 import Environment, FileSystemLoader
 from src.cli.commands.query_execution import execute_query
 from src.utilities.utils import (
-    get_directory_path,
+    get_file_path,
     read_json,
     read_csv,
     get_full_table_name)
@@ -81,13 +81,13 @@ def generate_sql_query(json_data, relationships_df):
         
         relevant_df = pd.merge(possible_combination_df, relationships_df, on=["full_name_table1", "full_name_table2"], how='inner')
         
-        templates_directory_path = get_directory_path(
+        templates_file_path = get_file_path(
             path=str(os.path.dirname(__file__)),
             levels=2,
-            directory_name="templates"
+            file_name="templates"
         )
 
-        env = Environment(loader=FileSystemLoader(templates_directory_path))
+        env = Environment(loader=FileSystemLoader(templates_file_path))
         template = env.get_template('template_create_generator.jinja')
 
         rendered_query = template.render(

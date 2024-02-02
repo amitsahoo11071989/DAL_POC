@@ -1,11 +1,11 @@
 import snowflake.connector
 from dotenv import load_dotenv
-from src.utilities import get_directory_path
+from src.utilities import get_file_path
 import os
 
-dotenv_path = get_directory_path(path=str(os.path.dirname(__file__)),
+dotenv_path = get_file_path(path=str(os.path.dirname(__file__)),
                                   levels=3,
-                                  directory_name=".env")
+                                  file_name=".env")
 
 
 
