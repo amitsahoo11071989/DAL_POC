@@ -87,14 +87,34 @@ def generate_sql_query(json_data, relationships_df):
             file_name="templates"
         )
 
+        pairwise_consecutive_tables_list = list(zip(json_tables,json_tables[1:]))
+        joins_string_list = [get_join_string_for_each_pair(table_pair, relevant_df) 
+                             for table_pair in pairwise_consecutive_tables_list]
+        
+        joins_string = '\n'.join(joins_string_list)
+
         env = Environment(loader=FileSystemLoader(templates_file_path))
         template = env.get_template('template_create_generator.jinja')
 
         rendered_query = template.render(
             config=json_data,
-            relevant_df=relevant_df
+            json_tables = json_tables,
+            joins_string = joins_string
         )
 
         return ' '.join(rendered_query.split('\n'))
     except Exception as e:
         raise CustomException(e)
+    
+def get_join_string_for_each_pair(table_pair, relevant_df):
+            result = relevant_df.loc[(
+                 (
+                      (relevant_df['full_name_table1']==table_pair[0]) & 
+                      (relevant_df['full_name_table2']==table_pair[1])
+                      ) |
+                     (
+                        (relevant_df['full_name_table2']==table_pair[0]) &
+                          (relevant_df['full_name_table1']==table_pair[1])
+                          )
+                          ),'join_condition'].item()
+            return f' JOIN {table_pair[1]} ON {result}'

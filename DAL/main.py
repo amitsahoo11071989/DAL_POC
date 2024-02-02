@@ -17,7 +17,7 @@ def main():
     args=argument_parser()
     json_file = get_file_path(path=str(os.path.dirname(__file__)),
                                                levels=1,
-                                               file_name="Data_Samples/sample3.json")
+                                               file_name="Data_Samples/sample4.json")
     
 
     sql_query = dynamic_sql_query(json_file if args.json_file is None else args.json_file,
