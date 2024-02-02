@@ -17,16 +17,12 @@ from src.utilities.exceptions import CustomException
 def dynamic_sql_query(json_file, csv_file):
     json_data = read_json(json_file)
     relationships_df = read_csv(csv_file)
-    invalid_columns_dict = validate_json_data(json_data)
-    if not invalid_columns_dict:
-         sql_query = generate_sql_query(json_data, relationships_df)
-         return sql_query
-    else:
-         error_mesg = ""
-         for table, columns in invalid_columns_dict.items():
-              error_mesg = error_mesg + f"\n {table} does not have {columns} columns\n"
-         sys.stdout.write(error_mesg)
-         sys.exit()
+    validate_json_data(json_data)
+
+    sql_query = generate_sql_query(json_data, relationships_df)
+    return sql_query
+
+         
 
 def validate_json_data(json_data):
 
@@ -63,7 +59,16 @@ def validate_json_data(json_data):
 
             table_with_non_matching_columns[table] = non_matching_columns
 
-            return table_with_non_matching_columns
+    spelling_check_bool = [True if len(x)>0 else False for x in 
+                           table_with_non_matching_columns.values()]
+
+    if True in spelling_check_bool:
+        error_mesg = ""
+        for table, columns in table_with_non_matching_columns.items():
+            if columns:
+                error_mesg = error_mesg + f"\n {table} table does not have {str(columns)[1:-1]} columns\n"
+        sys.stdout.write(error_mesg)
+        sys.exit()
 
 
             

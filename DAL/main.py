@@ -16,7 +16,7 @@ def main():
 
     # args=argument_parser()
 
-    json_file = r"C:\Users\amit.sahoo\OneDrive - Argo Group\DAL\SOURCE_CODE\DAL\Data Samples\sample4.json"
+    json_file = r"C:\Users\amit.sahoo\OneDrive - Argo Group\DAL\SOURCE_CODE\DAL\Data Samples\sample3.json"
 
     sql_query = dynamic_sql_query(  # args.json_file,
         json_file,

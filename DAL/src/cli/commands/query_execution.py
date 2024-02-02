@@ -10,8 +10,8 @@ def execute_query(sql_query):
         results = cursor.fetchall()
         return results
         
-    # except Exception as e:
-    #      raise CustomException(e)
+    except Exception as e:
+         raise CustomException(e)
     
     finally:
         cursor.close()
