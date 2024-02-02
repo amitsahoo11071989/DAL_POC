@@ -14,13 +14,12 @@ def main():
                                                levels=1,
                                                directory_name="tables_relationships.csv")
 
-    # args=argument_parser()
+    args=argument_parser()
 
     json_file = r"C:\Users\amit.sahoo\OneDrive - Argo Group\DAL\SOURCE_CODE\DAL\Data Samples\sample3.json"
 
-    sql_query = dynamic_sql_query(  # args.json_file,
-        json_file,
-        relation_csv_dir_path)
+    sql_query = dynamic_sql_query(json_file if args.json_file is None else args.json_file,
+                                  relation_csv_dir_path)
 
     review_query = "\n\nGenerated SQL Query:\n\n\n" + "\33[33m" + sql_query + "\33[0m"
     sys.stdout.write(review_query)

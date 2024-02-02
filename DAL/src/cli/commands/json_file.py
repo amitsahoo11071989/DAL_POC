@@ -70,18 +70,6 @@ def validate_json_data(json_data):
         sys.stdout.write(error_mesg)
         sys.exit()
 
-
-            
-
-
-            
-
-        
-
-        
-
-
-
 def generate_sql_query(json_data, relationships_df):
     try:
         json_tables = get_full_table_name(json_data)
