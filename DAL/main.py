@@ -20,9 +20,8 @@ def main():
                                                file_name="Data_Samples/sample3.json")
     
 
-    sql_query = dynamic_sql_query(  # args.json_file,
-        json_file,
-        relation_csv_dir_path)
+    sql_query = dynamic_sql_query(json_file if args.json_file is None else args.json_file,
+                                  relation_csv_dir_path)
 
     review_query = "\n\nGenerated SQL Query:\n\n\n" + "\33[33m" + sql_query + "\33[0m"
     sys.stdout.write(review_query)
@@ -30,7 +29,9 @@ def main():
     boolean_input = query_yes_no("\n\n Proceed to execute the query?")
 
     if boolean_input:
-        execute_query(sql_query)
+        results = execute_query(sql_query)
+        for row in results:
+            sys.stdout.write(f"\33[92m {row[0]} \33[0m")
     else:
         sys.stdout.write("SQL query execution aborted.")
 

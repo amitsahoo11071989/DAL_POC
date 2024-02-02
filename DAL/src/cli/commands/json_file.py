@@ -1,7 +1,9 @@
 import os
 import itertools
 import pandas as pd
+import sys
 from jinja2 import Environment, FileSystemLoader
+from src.cli.commands.query_execution import execute_query
 from src.utilities.utils import (
     get_file_path,
     read_json,
@@ -10,13 +12,63 @@ from src.utilities.utils import (
 from src.utilities.exceptions import CustomException
 
 
+
+
 def dynamic_sql_query(json_file, csv_file):
     json_data = read_json(json_file)
     relationships_df = read_csv(csv_file)
-    sql_query = generate_sql_query(json_data, relationships_df)
+    validate_json_data(json_data)
 
+    sql_query = generate_sql_query(json_data, relationships_df)
     return sql_query
 
+         
+
+def validate_json_data(json_data):
+
+    templates_directory_path = get_directory_path(
+            path=str(os.path.dirname(__file__)),
+            levels=2,
+            directory_name="templates")
+    
+    env = Environment(loader=FileSystemLoader(templates_directory_path))
+    template = env.get_template('template_show_columns.jinja')
+    
+    for data in json_data["source_data"]:
+        database = data["database"]
+        schema = data["schema"]
+
+        table_with_non_matching_columns= {}
+        for table in data["table_column_mapping"].keys():
+            column_list = []
+
+            show_table_query = template.render(
+            database=database,
+            schema=schema,
+            table=table
+            )
+
+            result = execute_query(show_table_query)
+
+            for row in result:
+                    column_list.append(row[2])
+
+            given_columns = data["table_column_mapping"][table]
+
+            non_matching_columns = list(set(given_columns) - set(column_list))
+
+            table_with_non_matching_columns[table] = non_matching_columns
+
+    spelling_check_bool = [True if len(x)>0 else False for x in 
+                           table_with_non_matching_columns.values()]
+
+    if True in spelling_check_bool:
+        error_mesg = ""
+        for table, columns in table_with_non_matching_columns.items():
+            if columns:
+                error_mesg = error_mesg + f"\n {table} table does not have {str(columns)[1:-1]} columns\n"
+        sys.stdout.write(error_mesg)
+        sys.exit()
 
 def generate_sql_query(json_data, relationships_df):
     try:
