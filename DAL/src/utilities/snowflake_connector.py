@@ -14,9 +14,13 @@ def open_connection():
     load_dotenv(dotenv_path=dotenv_path)
 
     conn = snowflake.connector.connect(
-        user = os.getenv("USER"),
-        password = os.getenv("PASSWORD"),
-        account = os.getenv("ACCOUNT")
+        # user = os.getenv("USER"),
+        # password = os.getenv("PASSWORD"),
+        # account = os.getenv("ACCOUNT")
+
+        user = "pratik.sinha@argogroupus.com",
+        authenticator="externalbrowser",
+        account = "argo.us-east-1"
     )
     return conn
 
