@@ -10,7 +10,7 @@ def error_message_detail(error, error_detail=sys):
         error_detail (str, optional): Complete description of the error. Defaults to sys. Defaults to sys.
 
     Returns:
-        _type_: _description_
+        str: Returns the Error Message with proper indentation and font color.
     """    
     type, _, exc_tb = error_detail.exc_info()
     file_name = exc_tb.tb_frame.f_code.co_filename
