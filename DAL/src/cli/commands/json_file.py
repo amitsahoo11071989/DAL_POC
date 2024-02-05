@@ -12,8 +12,6 @@ from src.utilities.utils import (
 from src.utilities.exceptions import CustomException
 
 
-
-
 def dynamic_sql_query(json_file, csv_file):
     """
     Reads the passed in JSON and CSV files and generates a dynamic SQL query based on their configuration.
@@ -31,7 +29,6 @@ def dynamic_sql_query(json_file, csv_file):
 
     sql_query = generate_sql_query(json_data, relationships_df)
     return sql_query
-
          
 
 def validate_json_data(json_data):
@@ -85,6 +82,7 @@ def validate_json_data(json_data):
         sys.stdout.write(error_mesg)
         sys.exit()
 
+
 def generate_sql_query(json_data, relationships_df):
     """
     Uses templates to generate a dynamic SQL query based on JSON configuration and relationships data.
@@ -134,7 +132,8 @@ def generate_sql_query(json_data, relationships_df):
         return ' '.join(rendered_query.split('\n'))
     except Exception as e:
         raise CustomException(e)
-    
+
+
 def get_join_string_for_each_pair(table_pair, relevant_df):
     """
     Get the JOIN string for a pair of tables based on their relationship in relationships DataFrame.

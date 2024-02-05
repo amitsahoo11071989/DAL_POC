@@ -10,6 +10,13 @@ colorama.init()
 
 
 def main():
+    """
+    Starting point of the DAL Program.
+    This function needs to be run from the CLI with the JSON file as argument
+    Executes the SQL Query in the Snowflake DB after fetching the,
+    relationships between tables and establishing the JOIN statements between them.
+
+    """    
     relation_csv_dir_path = get_file_path(path=str(os.path.dirname(__file__)),
                                                levels=1,
                                                file_name="tables_relationships.csv")
