@@ -3,6 +3,12 @@ import sys
 
 
 def argument_parser():
+    """
+    Parses command-line arguments 
+
+    Returns:
+        argparse.Namespace: An object containing parsed command-line arguments.
+    """
     parser = argparse.ArgumentParser(description='Database Query CLI')
     parser.add_argument('-jf', '--json_file', type=str, help='Path to the JSON configuration file. Ex - /path/to/file.json. Example: python main.py -jf "<path of JSON configuration file>"')
     # if (len(sys.argv)<3) or (len(sys.argv)!=3) or (sys.argv[1] not in ['-jf', '--json_file']):

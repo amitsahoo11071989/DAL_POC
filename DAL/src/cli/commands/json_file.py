@@ -15,6 +15,16 @@ from src.utilities.exceptions import CustomException
 
 
 def dynamic_sql_query(json_file, csv_file):
+    """
+    Reads the passed in JSON and CSV files and generates a dynamic SQL query based on their configuration.
+
+    Args:
+        json_file (str): Path to the JSON configuration file.
+        csv_file (str): Path to the CSV file containing relationships data.
+
+    Returns:
+        str: The dynamically generated sql query.
+    """    
     json_data = read_json(json_file)
     relationships_df = read_csv(csv_file)
     validate_json_data(json_data)
@@ -25,7 +35,12 @@ def dynamic_sql_query(json_file, csv_file):
          
 
 def validate_json_data(json_data):
+    """
+    Validates the JSON configuration data for correctness against database schema.
 
+    Args:
+        json_data (dict): The JSON configuration data containing database, schema details.
+    """
     templates_file_path = get_file_path(
             path=str(os.path.dirname(__file__)),
             levels=2,
@@ -71,6 +86,20 @@ def validate_json_data(json_data):
         sys.exit()
 
 def generate_sql_query(json_data, relationships_df):
+    """
+    Uses templates to generate a dynamic SQL query based on JSON configuration and relationships data.
+
+
+    Args:
+        json_data (dict): The JSON configuration data containing details about tables.
+        relationships_df (pd.DataFrame): DataFrame containing information about relationships between tables.
+
+    Raises:
+        CustomException: If an error occurs during SQL query generation.
+
+    Returns:
+        str: The dynamically generated sql query.
+    """    
     try:
         json_tables = get_full_table_name(json_data)
 
@@ -107,14 +136,24 @@ def generate_sql_query(json_data, relationships_df):
         raise CustomException(e)
     
 def get_join_string_for_each_pair(table_pair, relevant_df):
-            result = relevant_df.loc[(
-                 (
-                      (relevant_df['full_name_table1']==table_pair[0]) & 
-                      (relevant_df['full_name_table2']==table_pair[1])
-                      ) |
-                     (
-                        (relevant_df['full_name_table2']==table_pair[0]) &
-                          (relevant_df['full_name_table1']==table_pair[1])
-                          )
-                          ),'join_condition'].item()
-            return f' JOIN {table_pair[1]} ON {result}'
+    """
+    Get the JOIN string for a pair of tables based on their relationship in relationships DataFrame.
+
+    Args:
+        table_pair (tuple): A tuple containing two table names.
+        relevant_df (pd.DataFrame): DataFrame containing information about relationships between tables.
+
+    Returns:
+        str: The JOIN string for the given pair of tables.
+    """    
+    result = relevant_df.loc[(
+            (
+                (relevant_df['full_name_table1']==table_pair[0]) & 
+                (relevant_df['full_name_table2']==table_pair[1])
+                ) |
+                (
+                (relevant_df['full_name_table2']==table_pair[0]) &
+                    (relevant_df['full_name_table1']==table_pair[1])
+                    )
+                    ),'join_condition'].item()
+    return f' JOIN {table_pair[1]} ON {result}'
