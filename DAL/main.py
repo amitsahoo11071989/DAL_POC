@@ -27,7 +27,7 @@ def main():
 
     json_file = get_file_path(path=str(os.path.dirname(__file__)),
                                                levels=1,
-                                               file_name="Data_Samples/sample4.json")
+                                               file_name="Data_Samples/sample3.json")
     
     sql_query = dynamic_sql_query(json_file if args.json_file is None else args.json_file,
                                   relation_csv_dir_path)
@@ -38,7 +38,8 @@ def main():
     boolean_input = query_yes_no("\n\n Proceed to execute the query?")
 
     if boolean_input:
-        results = SnowflakeUtils.execute_query(sql_query)
+        snnw = SnowflakeUtils()
+        results = snnw.execute_query(sql_query)
         for row in results:
             sys.stdout.write(f"\33[92m {row[0]} \33[0m")
     else:
