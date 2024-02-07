@@ -3,7 +3,7 @@ import os
 import colorama
 
 from src.utilities import get_file_path, query_yes_no
-from src.cli import dynamic_sql_query, execute_query
+from src.cli import SqlGenerator, execute_query
 from src.cli import InputParser
 
 colorama.init()
@@ -17,21 +17,24 @@ def main():
     relationships between tables and establishing the JOIN statements between them.
 
     """    
-    # relation_csv_dir_path = get_file_path(path=str(os.path.dirname(__file__)),
-    #                                            levels=1,
-    #                                            file_name="tables_relationships.csv")
+    relation_csv_dir_path = get_file_path(path=str(os.path.dirname(__file__)),
+                                               levels=1,
+                                               file_name="tables_relationships.csv")
 
-    args=InputParser()
-    args.argument_parser()
+    parser=InputParser()
+    args = parser.argument_parser()
+    print(args.json_file)
 
-
-    # json_file = get_file_path(path=str(os.path.dirname(__file__)),
-    #                                            levels=1,
-    #                                            file_name="Data_Samples/sample4.json")
+    json_file = get_file_path(path=str(os.path.dirname(__file__)),
+                                               levels=1,
+                                               file_name="Data_Samples/sample3.json")
     
-
-    # sql_query = dynamic_sql_query(json_file if args.json_file is None else args.json_file,
-    #                               relation_csv_dir_path)
+    sql_generator = SqlGenerator(json_file if args.json_file is None else args.json_file,
+                                 relation_csv_dir_path)
+    sql_query = sql_generator.dynamic_sql_query()
+    
+    #print(sql_query)
+    
 
     # review_query = "\n\nGenerated SQL Query:\n\n\n" + "\33[33m" + sql_query + "\33[0m"
     # sys.stdout.write(review_query)

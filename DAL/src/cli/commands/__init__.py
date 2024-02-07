@@ -1,2 +1,2 @@
-from .json_file import dynamic_sql_query
+from .json_file import SqlGenerator
 from .query_execution import execute_query
