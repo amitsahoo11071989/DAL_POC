@@ -8,7 +8,6 @@ from src.cli import InputParser
 
 colorama.init()
 
-
 def main():
     """
     Starting point of the DAL Program.
@@ -17,10 +16,7 @@ def main():
     relationships between tables and establishing the JOIN statements between them.
 
     """    
-    relation_csv_dir_path = get_file_path(path=str(os.path.dirname(__file__)),
-                                               levels=1,
-                                               file_name="tables_relationships.csv")
-
+    
     parser=InputParser()
     args = parser.argument_parser()
     print(args.json_file)
@@ -29,8 +25,7 @@ def main():
                                                levels=1,
                                                file_name="Data_Samples/sample3.json")
     
-    sql_generator = SqlGenerator(json_file if args.json_file is None else args.json_file,
-                                 relation_csv_dir_path)
+    sql_generator = SqlGenerator(json_file if args.json_file is None else args.json_file)
     sql_query = sql_generator.dynamic_sql_query()
     
     #print(sql_query)

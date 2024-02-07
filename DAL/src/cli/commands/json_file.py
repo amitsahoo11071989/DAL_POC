@@ -12,10 +12,14 @@ from src.utilities.utils import (
     read_csv,
     get_full_table_name)
 from src.utilities.exceptions import CustomException
+
 class SqlGenerator:
-    def __init__(self,json_file,csv_file) -> None:
+    def __init__(self,json_file) -> None:
         self.json_file = json_file
-        self.csv_file = csv_file
+        self.csv_file = get_file_path(path=str(os.path.dirname(__file__)),
+                                               levels=4,
+                                               file_name="tables_relationships.csv")
+
 
     def dynamic_sql_query(self):
         """
@@ -126,7 +130,7 @@ class JsonValidation:
     def __init__(self,json_data) -> None:
         self.json_data = json_data
 
-    def validate_json(self):
+    def validate_json_format(self):
         class SourceData(BaseModel):
             database: str
             schema: str
@@ -137,12 +141,14 @@ class JsonValidation:
             target_lag: str
             warehouse: str
             source_data: list[SourceData]
-        
-        validation_result = JsonStructure(**self.json_data)
+        try:
+            validation_result = JsonStructure(**self.json_data)
+        except Exception as e:
+            raise CustomException(e)
         print("*******")
         return validation_result
     
-    def validate_json_data(self):
+    def validate_json_column(self):
         """
         Validates the JSON configuration data for correctness against database schema.
 
@@ -195,8 +201,8 @@ class JsonValidation:
             sys.exit()
     
     def run(self):
-        self.validate_json()
-        self.validate_json_data()
+        self.validate_json_format()
+        self.validate_json_column()
 
     __call__ = run
             
