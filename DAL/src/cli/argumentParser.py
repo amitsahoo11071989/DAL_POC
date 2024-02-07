@@ -27,4 +27,3 @@ class InputParser:
         #     sys.exit(0)
         # else:
         return self.parser.parse_args()
-        

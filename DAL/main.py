@@ -3,7 +3,8 @@ import os
 import colorama
 
 from src.utilities import get_file_path, query_yes_no
-from src.cli import dynamic_sql_query, execute_query
+from src.utilities.snowflake_connector import SnowflakeUtils
+from src.cli import dynamic_sql_query
 from src.cli import InputParser
 
 colorama.init()
@@ -37,7 +38,7 @@ def main():
     boolean_input = query_yes_no("\n\n Proceed to execute the query?")
 
     if boolean_input:
-        results = execute_query(sql_query)
+        results = SnowflakeUtils.execute_query(sql_query)
         for row in results:
             sys.stdout.write(f"\33[92m {row[0]} \33[0m")
     else:

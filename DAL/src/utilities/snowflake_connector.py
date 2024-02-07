@@ -1,7 +1,7 @@
-import snowflake.connector as sc
 from dotenv import load_dotenv
 from src.utilities import get_file_path
 from src.utilities.exceptions import CustomException
+from snowflake import connector
 import os
 
 
@@ -25,10 +25,10 @@ class SnowflakeUtils:
         Returns:
             conn: Returns the conn object for running the sql statements.
         """
-        conn = sc.connector.connect(
-            self.user,
-            self.password,
-            self.account
+        conn = connector.connect(
+            user = self.user,
+            password = self.password,
+            account = self.account
             )
         return conn
 
@@ -55,7 +55,7 @@ class SnowflakeUtils:
             list: Returns the execution results as a list.
         """    
         try:
-            conn = sc.open_connection()
+            conn = self.open_connection()
             cursor = conn.cursor()
             cursor.execute(sql_query)
             results = cursor.fetchall()
@@ -66,4 +66,4 @@ class SnowflakeUtils:
         
         finally:
             cursor.close()
-            sc.close_connection(conn)
+            self.close_connection(conn)

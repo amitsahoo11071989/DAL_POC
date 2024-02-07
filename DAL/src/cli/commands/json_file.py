@@ -3,7 +3,7 @@ import itertools
 import pandas as pd
 import sys
 from jinja2 import Environment, FileSystemLoader
-from src.cli.commands.query_execution import execute_query
+from src.utilities.snowflake_connector import SnowflakeUtils
 from src.utilities.utils import (
     get_file_path,
     read_json,
@@ -60,7 +60,8 @@ def validate_json_data(json_data):
             table=table
             )
 
-            result = execute_query(show_table_query)
+            snnw = SnowflakeUtils()
+            result = snnw.execute_query(show_table_query)
 
             for row in result:
                     column_list.append(row[2])
