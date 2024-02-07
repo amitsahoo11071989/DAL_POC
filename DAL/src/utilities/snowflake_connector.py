@@ -1,6 +1,7 @@
-import snowflake.connector
+import snowflake.connector as sc
 from dotenv import load_dotenv
 from src.utilities import get_file_path
+from src.utilities.exceptions import CustomException
 import os
 
 
@@ -9,26 +10,60 @@ dotenv_path = get_file_path(path=str(os.path.dirname(__file__)),
                                   file_name=".env")
 
 
+class SnowflakeUtils:
+    def __init__(self) -> None:
+        load_dotenv(dotenv_path=dotenv_path)
+        self.user = os.getenv('USER')
+        self.password = os.getenv('PASSWORD')
+        self.account = os.getenv('ACCOUNT')
 
-def open_connection():
-    """
-    Connects the python program to snowflake sql instance using the credentials in environment.
 
-    Returns:
-        conn: Returns the conn object for running the sql statements.
-    """
-    load_dotenv(dotenv_path=dotenv_path)
+    def open_connection(self):
+        """
+        Connects the python program to snowflake sql instance using the credentials in environment.
 
-    conn = snowflake.connector.connect(
-        user = os.getenv("USER"),
-        password = os.getenv("PASSWORD"),
-        account = os.getenv("ACCOUNT")
-    )
-    return conn
+        Returns:
+            conn: Returns the conn object for running the sql statements.
+        """
+        conn = sc.connector.connect(
+            self.user,
+            self.password,
+            self.account
+            )
+        return conn
 
-def close_connection(conn):
-    """Closes the snowflake connection.
-    Args:
-        conn (object): Object of the snowflake cursor object.
-    """    
-    conn.close()
+
+    def close_connection(self, conn):
+        """Closes the snowflake connection.
+        Args:
+            conn (object): Object of the snowflake cursor object.
+        """    
+        conn.close()
+
+
+    def execute_query(self, sql_query):
+        """
+        Connects to Snowflake and executes the sql_query that is passed in.
+
+        Args:
+            sql_query (str): The SQL query to be executed.
+
+        Raises:
+            CustomException: If an error occurs during query execution.
+
+        Returns:
+            list: Returns the execution results as a list.
+        """    
+        try:
+            conn = sc.open_connection()
+            cursor = conn.cursor()
+            cursor.execute(sql_query)
+            results = cursor.fetchall()
+            return results
+            
+        except Exception as e:
+            raise CustomException(e)
+        
+        finally:
+            cursor.close()
+            sc.close_connection(conn)
