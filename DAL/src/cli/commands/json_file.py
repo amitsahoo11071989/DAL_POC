@@ -3,7 +3,7 @@ import itertools
 import pandas as pd
 
 from jinja2 import Environment, FileSystemLoader
-
+from src.utilities.snowflake_connector import SnowflakeUtils
 
 from src.utilities.utils import (
     get_file_path,

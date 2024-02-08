@@ -13,10 +13,6 @@ class InputParser:
                                  Example: python main.py -jf "<path of JSON configuration file>"''')
 
 
-    # def  parse_arguements(self):
-    #     return self.parser.parse_args()
-
-
     def argument_parser(self):
         """
         Parses command-line arguments 
@@ -31,4 +27,3 @@ class InputParser:
         #     sys.exit(0)
         # else:
         return self.parser.parse_args()
-        
