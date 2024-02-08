@@ -4,10 +4,9 @@ from src.utilities.exceptions import CustomException
 from snowflake import connector
 import os
 
-
 dotenv_path = get_file_path(path=str(os.path.dirname(__file__)),
-                                  levels=3,
-                                  file_name=".env")
+                            levels=3,
+                            file_name=".env")
 
 
 class SnowflakeUtils:
@@ -17,7 +16,6 @@ class SnowflakeUtils:
         self.password = os.getenv('PASSWORD')
         self.account = os.getenv('ACCOUNT')
 
-
     def open_connection(self):
         """
         Connects the python program to snowflake sql instance using the credentials in environment.
@@ -26,20 +24,18 @@ class SnowflakeUtils:
             conn: Returns the conn object for running the sql statements.
         """
         conn = connector.connect(
-            user = self.user,
-            password = self.password,
-            account = self.account
-            )
+            user=self.user,
+            password=self.password,
+            account=self.account
+        )
         return conn
-
 
     def close_connection(self, conn):
         """Closes the snowflake connection.
         Args:
             conn (object): Object of the snowflake cursor object.
-        """    
+        """
         conn.close()
-
 
     def execute_query(self, sql_query):
         """
@@ -53,17 +49,17 @@ class SnowflakeUtils:
 
         Returns:
             list: Returns the execution results as a list.
-        """    
+        """
         try:
             conn = self.open_connection()
             cursor = conn.cursor()
             cursor.execute(sql_query)
             results = cursor.fetchall()
             return results
-            
+
         except Exception as e:
             raise CustomException(e)
-        
+
         finally:
             cursor.close()
             self.close_connection(conn)
