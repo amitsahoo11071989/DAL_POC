@@ -26,7 +26,8 @@ def execute_query(sql_query):
          raise CustomException(e)
     
     finally:
-        cursor.close()
-        sc.close_connection(conn)
+        if 'conn' in locals():
+            cursor.close()
+            sc.close_connection(conn)
         
         
