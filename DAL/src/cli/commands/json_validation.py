@@ -3,10 +3,11 @@ import os
 
 from jinja2 import Environment, FileSystemLoader
 
-from src.cli.commands.query_execution import execute_query
+
 from src.cli.commands.json_schema import JsonStructure
 from src.utilities.exceptions import CustomException
 from src.utilities.utils import get_file_path
+from src.utilities.snowflake_connector import SnowflakeUtils
 
 
 class JsonValidation:
@@ -50,7 +51,8 @@ class JsonValidation:
                     table=table
                 )
 
-                result = execute_query(show_table_query)
+                sc = SnowflakeUtils()
+                result = sc.execute_query(show_table_query)
 
                 for row in result:
                     column_list.append(row[2])
