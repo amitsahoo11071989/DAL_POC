@@ -3,11 +3,8 @@ import os
 import colorama
 
 from src.utilities import get_file_path, query_yes_no
-
 from src.utilities.snowflake_connector import SnowflakeUtils
-from src.cli import dynamic_sql_query
-
-from src.cli import SqlGenerator, execute_query
+from src.cli import SqlGenerator
 
 from src.cli import InputParser
 
@@ -30,18 +27,16 @@ def main():
     
     sql_generator = SqlGenerator(json_file if args.json_file is None else args.json_file)
     sql_query = sql_generator.dynamic_sql_query()
-    
-    print(sql_query)
-    
+       
 
-    # review_query = "\n\nGenerated SQL Query:\n\n\n" + "\33[33m" + sql_query + "\33[0m"
-    # sys.stdout.write(review_query)
+    review_query = "\n\nGenerated SQL Query:\n\n\n" + "\33[33m" + sql_query + "\33[0m"
+    sys.stdout.write(review_query)
 
     boolean_input = query_yes_no("\n\n Proceed to execute the query?")
 
     if boolean_input:
-        snnw = SnowflakeUtils()
-        results = snnw.execute_query(sql_query)
+        sc = SnowflakeUtils()
+        results = sc.execute_query(sql_query)
         for row in results:
             sys.stdout.write(f"\33[92m {row[0]} \33[0m")
     else:
