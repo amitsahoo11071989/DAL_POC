@@ -17,9 +17,7 @@ def main():
 
     """    
     
-    parser=InputParser()
-    args = parser.argument_parser()
-    print(args.json_file)
+    args = InputParser().argument_parser()
 
     json_file = get_file_path(path=str(os.path.dirname(__file__)),
                                                levels=1,
@@ -28,7 +26,7 @@ def main():
     sql_generator = SqlGenerator(json_file if args.json_file is None else args.json_file)
     sql_query = sql_generator.dynamic_sql_query()
     
-    #print(sql_query)
+    print(sql_query)
     
 
     # review_query = "\n\nGenerated SQL Query:\n\n\n" + "\33[33m" + sql_query + "\33[0m"
