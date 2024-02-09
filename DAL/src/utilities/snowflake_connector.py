@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
-from src.utilities import get_file_path
-from src.utilities.exceptions import CustomException
+from .utils import get_file_path
+from .exceptions import CustomException
 from snowflake import connector
 import os
 

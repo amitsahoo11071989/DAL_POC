@@ -1,4 +1,4 @@
-from src.utilities.exceptions import CustomException
+from .exceptions import CustomException
 import json
 import pandas as pd
 from itertools import chain
