@@ -12,7 +12,7 @@ colorama.init()
 
 def main():
     """
-    Starting point of the DAL Program.
+    Starting point of the DAL Program .
     This function needs to be run from the CLI with the JSON file as argument
     Executes the SQL Query in the Snowflake DB after fetching the,
     relationships between tables and establishing the JOIN statements between them.
