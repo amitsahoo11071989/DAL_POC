@@ -4,10 +4,10 @@ import os
 from jinja2 import Environment, FileSystemLoader
 
 
-from src.cli.commands.json_schema import JsonStructure
-from src.utilities.exceptions import CustomException
-from src.utilities.utils import get_file_path
-from src.utilities.snowflake_connector import SnowflakeUtils
+from cli.commands.json_schema import JsonStructure
+from utilities.exceptions import CustomException
+from utilities.utils import get_file_path
+from utilities.snowflake_connector import SnowflakeUtils
 
 
 class JsonValidation:

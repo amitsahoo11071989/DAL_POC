@@ -3,15 +3,15 @@ import itertools
 import pandas as pd
 
 from jinja2 import Environment, FileSystemLoader
-from src.utilities.snowflake_connector import SnowflakeUtils
+from utilities.snowflake_connector import SnowflakeUtils
 
-from src.utilities.utils import (
+from utilities.utils import (
     get_file_path,
     read_json,
     read_csv,
     get_full_table_name)
-from src.utilities.exceptions import CustomException
-from src.cli.commands.json_validation import JsonValidation
+from utilities.exceptions import CustomException
+from cli.commands.json_validation import JsonValidation
 
 
 class SqlGenerator:

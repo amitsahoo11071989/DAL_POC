@@ -2,11 +2,11 @@ import sys
 import os
 import colorama
 
-from src.utilities import get_file_path, query_yes_no
-from src.utilities.snowflake_connector import SnowflakeUtils
-from src.cli import SqlGenerator
+from utilities import get_file_path, query_yes_no
+from utilities.snowflake_connector import SnowflakeUtils
+from cli import SqlGenerator
 
-from src.cli import InputParser
+from cli import InputParser
 
 colorama.init()
 
@@ -21,8 +21,8 @@ def main():
     
     args = InputParser().argument_parser()
 
-    json_file = get_file_path(path=str(os.path.dirname(__file__)),
-                                               levels=1,
+    json_file = get_file_path(path=str(os.path.dirname(__file__)).strip("\\DAL\\src"),
+                                               levels=-1,
                                                file_name="Data_Samples/sample3.json")
     
     sql_generator = SqlGenerator(json_file if args.json_file is None else args.json_file)
