@@ -4,17 +4,17 @@ from .exceptions import CustomException
 from snowflake import connector
 import os
 
-dotenv_path = get_file_path(path=str(os.path.dirname(__file__)),
-                            levels=3,
-                            file_name=".env")
+dotenv_path = get_file_path(
+    path=str(os.path.dirname(__file__)), levels=3, file_name=".env"
+)
 
 
 class SnowflakeUtils:
     def __init__(self) -> None:
         load_dotenv(dotenv_path=dotenv_path)
-        self.user = os.getenv('USER')
-        self.password = os.getenv('PASSWORD')
-        self.account = os.getenv('ACCOUNT')
+        self.user = os.getenv("USER")
+        self.password = os.getenv("PASSWORD")
+        self.account = os.getenv("ACCOUNT")
 
     def open_connection(self):
         """
@@ -24,9 +24,7 @@ class SnowflakeUtils:
             conn: Returns the conn object for running the sql statements.
         """
         conn = connector.connect(
-            user=self.user,
-            password=self.password,
-            account=self.account
+            user=self.user, password=self.password, account=self.account
         )
         return conn
 

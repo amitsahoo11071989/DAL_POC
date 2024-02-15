@@ -5,6 +5,7 @@ from itertools import chain
 import os
 import sys
 
+
 def get_file_path(path, levels, file_name):
     """
     Fetches the file path and normalises the path according to the os.
@@ -16,7 +17,7 @@ def get_file_path(path, levels, file_name):
 
     Returns:
         str: Normalised path for the provided path, level and filename.
-    """    
+    """
     path = os.path.normpath(path)
     new_path = os.path.join(os.path.join(path, *([os.pardir] * levels)), file_name)
 
@@ -35,9 +36,9 @@ def read_json(json_file):
 
     Returns:
         dict: Dictionary of the json after being read and typed into dict.
-    """    
+    """
     try:
-        with open(json_file, 'r') as json_file:
+        with open(json_file, "r") as json_file:
             config = json.load(json_file)
             return config
     except Exception as e:
@@ -54,16 +55,26 @@ def get_full_relationship(df):
 
     Returns:
         dataframe: Returns the realtionship dataframe from the relationship tables CSV file.
-    """    
-    df['full_name_table1'] = df[["Database1", "Schema1", "Table1"]].apply(lambda x: '.'.join(x.values), axis=1)
-    df['full_name_table2'] = df[["Database2", "Schema2", "Table2"]].apply(lambda x: '.'.join(x.values), axis=1)
+    """
+    df["full_name_table1"] = df[["Database1", "Schema1", "Table1"]].apply(
+        lambda x: ".".join(x.values), axis=1
+    )
+    df["full_name_table2"] = df[["Database2", "Schema2", "Table2"]].apply(
+        lambda x: ".".join(x.values), axis=1
+    )
 
-    df[["left_column", "right_column"]] = df['Condition'].str.split('=', expand=True)
+    df[["left_column", "right_column"]] = df["Condition"].str.split("=", expand=True)
 
-    df['full_left_column'] = df[["full_name_table1", "left_column"]].apply(lambda x: '.'.join(x.values), axis=1)
-    df['full_right_column'] = df[["full_name_table2", "right_column"]].apply(lambda x: '.'.join(x.values), axis=1)
+    df["full_left_column"] = df[["full_name_table1", "left_column"]].apply(
+        lambda x: ".".join(x.values), axis=1
+    )
+    df["full_right_column"] = df[["full_name_table2", "right_column"]].apply(
+        lambda x: ".".join(x.values), axis=1
+    )
 
-    df['join_condition'] = df.apply(lambda x: '%s = %s' % (x['full_left_column'], x['full_right_column']), axis=1)
+    df["join_condition"] = df.apply(
+        lambda x: "%s = %s" % (x["full_left_column"], x["full_right_column"]), axis=1
+    )
 
     df = df[["full_name_table1", "full_name_table2", "join_condition"]]
     return df
@@ -81,7 +92,7 @@ def read_csv(csv_file):
 
     Returns:
         dataframe: Returns the dataframe after running the function get_full_relationship().
-    """    
+    """
     try:
         relationships_df = pd.read_csv(csv_file)
         return get_full_relationship(relationships_df)
@@ -98,13 +109,19 @@ def get_full_table_name(json_data):
 
     Returns:
         list: List of the fully qualified table name from the dataframe.
-    """    
+    """
     table_list = []
     for i in json_data["source_data"]:
         database = i["database"]
         schema = i["schema"]
         table_list.append(
-            list(map(lambda table: f"{database}.{schema}.{table}", list(i["table_column_mapping"].keys()))))
+            list(
+                map(
+                    lambda table: f"{database}.{schema}.{table}",
+                    list(i["table_column_mapping"].keys()),
+                )
+            )
+        )
     return list(chain(*table_list))
 
 

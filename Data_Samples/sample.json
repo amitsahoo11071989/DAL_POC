@@ -24,6 +24,13 @@
                     "INSERTED_USER"
                 ]
             }
+        },
+        {
+            "database":"123",
+            "schema":"abc",
+            "table_column_mapping":{
+                "table1":["col1","col2"]
+            }
         }    
     ]
 }
