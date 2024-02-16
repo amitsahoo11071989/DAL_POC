@@ -10,6 +10,7 @@ from cli import InputParser
 
 colorama.init()
 
+
 def main():
     """
     Starting point of the DAL Program .
@@ -17,17 +18,20 @@ def main():
     Executes the SQL Query in the Snowflake DB after fetching the,
     relationships between tables and establishing the JOIN statements between them.
 
-    """    
-    
+    """
+
     args = InputParser().argument_parser()
 
-    json_file = get_file_path(path=str(os.path.dirname(__file__)),
-                                               levels=2,
-                                               file_name="Data_Samples/sample3.json")
-    
-    sql_generator = SqlGenerator(json_file if args.json_file is None else args.json_file)
+    json_file = get_file_path(
+        path=str(os.path.dirname(__file__)),
+        levels=2,
+        file_name="Data_Samples/sample3.json",
+    )
+
+    sql_generator = SqlGenerator(
+        json_file if args.json_file is None else args.json_file
+    )
     sql_query = sql_generator.dynamic_sql_query()
-       
 
     review_query = "\n\nGenerated SQL Query:\n\n\n" + "\33[33m" + sql_query + "\33[0m"
     sys.stdout.write(review_query)

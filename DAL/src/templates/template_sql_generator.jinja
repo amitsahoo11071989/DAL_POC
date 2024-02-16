@@ -1,14 +1,9 @@
 SELECT {{' '}}
-{%- for data in config['source_data'] -%}
-    {%- for table, columns in data['table_column_mapping'].items() -%}
-        {%- for column in columns -%}
-            {{data['database']}}.{{data['schema']}}.{{table}}.{{column}}{{', ' if not loop.last}}
-        {%- endfor -%}{{',' if not loop.last}}
-    {%- endfor -%}{{' '}}
-    FROM {{ json_tables[0] }}
-    {{joins_string}}
-{%- endfor -%}
-
+{%- for data in config -%}
+    {{data}}
+{%- endfor -%}{{' '}}
+FROM {{ json_tables[0] }}
+{{joins_string}}
 
 
 
