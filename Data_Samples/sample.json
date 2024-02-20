@@ -1,5 +1,5 @@
 {
-    "target_table_name": "CLAIM_TESTING_21",
+    "target_table_name": "CLAIM_TESTING_9",
     "target_lag": "300",
     "warehouse": "DAL_ALL_IT_CONSUMER_WH",
     "source_data": [
@@ -8,8 +8,8 @@
             "schema": "EDW",
             "table_column_mapping": {
                 "CLAIM": [
-                    "CLAIM_ID AS CLAIMID",
-                    "CLAIM_NUMBER AS CLAIMNUMBER",
+                    "CLAIM_ID",
+                    "CLAIM_NUMBER",
                     "LOSS_DATE",
                     "REPORTED_TO_INSURER_DATE",
                     "LOSS_DESCRIPTION",
@@ -23,6 +23,13 @@
                     "CLAIM_TRANSACTION_TYPE_CODE",
                     "INSERTED_USER"
                 ]
+            }
+        },
+        {
+            "database":"123",
+            "schema":"abc",
+            "table_column_mapping":{
+                "table1":["col1","col2"]
             }
         }    
     ]

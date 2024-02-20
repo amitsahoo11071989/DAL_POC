@@ -31,12 +31,11 @@ class JsonValidation:
             json_data (JsonValidation): The JSON configuration data containing database, schema details.
         """
         templates_file_path = get_file_path(
-            path=str(os.path.dirname(__file__)),
-            levels=2,
-            file_name="templates")
+            path=str(os.path.dirname(__file__)), levels=2, file_name="templates"
+        )
 
         env = Environment(loader=FileSystemLoader(templates_file_path))
-        template = env.get_template('template_show_columns.jinja')
+        template = env.get_template("template_show_columns.jinja")
 
         for data in self.json_data["source_data"]:
             database = data["database"]
@@ -47,9 +46,7 @@ class JsonValidation:
                 actual_column_list = []
 
                 show_table_query = template.render(
-                    database=database,
-                    schema=schema,
-                    table=table
+                    database=database, schema=schema, table=table
                 )
 
                 sc = SnowflakeUtils()
@@ -65,14 +62,19 @@ class JsonValidation:
 
                 table_with_non_matching_columns[table] = non_matching_columns
 
-        spelling_check_bool = [True if len(x) > 0 else False for x in
-                               table_with_non_matching_columns.values()]
+        spelling_check_bool = [
+            True if len(x) > 0 else False
+            for x in table_with_non_matching_columns.values()
+        ]
 
         if True in spelling_check_bool:
             error_mesg = ""
             for table, columns in table_with_non_matching_columns.items():
                 if columns:
-                    error_mesg = error_mesg + f"\n {table} table does not have {str(columns)[1:-1]} columns\n"
+                    error_mesg = (
+                        error_mesg
+                        + f"\n {table} table does not have {str(columns)[1:-1]} columns\n"
+                    )
             sys.stdout.write(error_mesg)
             sys.exit()
 

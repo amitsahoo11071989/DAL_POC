@@ -11,7 +11,7 @@ def error_message_detail(error, error_detail=sys):
 
     Returns:
         str: Returns the Error Message with proper indentation and font color.
-    """    
+    """
     type, _, exc_tb = error_detail.exc_info()
     file_name = exc_tb.tb_frame.f_code.co_filename
     error_message = f"\n Error in - {file_name}, \n line - {exc_tb.tb_lineno}, \n error - {type.__name__}: \n {str(error)}"
@@ -25,7 +25,8 @@ class CustomException(Exception):
 
     Args:
         Exception (object): Error object which has been raised.
-    """    
+    """
+
     def __init__(self, error_message, error_detail=sys):
         """
         Initializes an CustomException object.
@@ -33,9 +34,11 @@ class CustomException(Exception):
         Args:
             error_message (str): Short Message/Heading of the error.
             error_detail (str, optional): Complete description of the error. Defaults to sys.
-        """        
+        """
         super().__init__(error_message)
-        self.error_message = error_message_detail(error_message, error_detail=error_detail)
+        self.error_message = error_message_detail(
+            error_message, error_detail=error_detail
+        )
 
     def __str__(self):
         """
@@ -43,5 +46,5 @@ class CustomException(Exception):
 
         Returns:
             str: Returns the complete description of the error.
-        """        
+        """
         return self.error_message
