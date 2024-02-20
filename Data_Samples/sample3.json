@@ -1,5 +1,5 @@
 {
-    "target_table_name": "CLAIM_TESTING_9",
+    "target_table_name": "CLAIM_TESTING_21",
     "target_lag": "300",
     "warehouse": "DAL_ALL_IT_CONSUMER_WH",
     "source_data": [
@@ -8,8 +8,8 @@
             "schema": "EDW",
             "table_column_mapping": {
                 "CLAIM": [
-                    "CLAIM_ID",
-                    "CLAIM_NUMBER",
+                    "CLAIM_ID AS CLAIMID",
+                    "CLAIM_NUMBER AS CLAIMNUMBER",
                     "LOSS_DATE",
                     "REPORTED_TO_INSURER_DATE",
                     "LOSS_DESCRIPTION",

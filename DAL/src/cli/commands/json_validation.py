@@ -15,6 +15,7 @@ class JsonValidation:
         self.json_data = json_data
 
     def validate_json_format(self):
+        
 
         try:
             JsonStructure(**self.json_data)
@@ -27,7 +28,7 @@ class JsonValidation:
         Validates the JSON configuration data for correctness against database schema.
 
         Args:
-            json_data (dict): The JSON configuration data containing database, schema details.
+            json_data (JsonValidation): The JSON configuration data containing database, schema details.
         """
         templates_file_path = get_file_path(
             path=str(os.path.dirname(__file__)),
@@ -43,7 +44,7 @@ class JsonValidation:
 
             table_with_non_matching_columns = {}
             for table in data["table_column_mapping"].keys():
-                column_list = []
+                actual_column_list = []
 
                 show_table_query = template.render(
                     database=database,
@@ -55,11 +56,12 @@ class JsonValidation:
                 result = sc.execute_query(show_table_query)
 
                 for row in result:
-                    column_list.append(row[2])
+                    actual_column_list.append(row[2])
 
-                given_columns = data["table_column_mapping"][table]
+                given_columns = list(map(lambda column: column.split()[0],
+                                     data["table_column_mapping"][table]))
 
-                non_matching_columns = list(set(given_columns) - set(column_list))
+                non_matching_columns = list(set(given_columns) - set(actual_column_list))
 
                 table_with_non_matching_columns[table] = non_matching_columns
 
