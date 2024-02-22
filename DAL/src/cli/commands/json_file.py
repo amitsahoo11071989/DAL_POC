@@ -11,6 +11,7 @@ from cli.commands.json_validation import JsonValidation
 
 
 class SqlGenerator:
+    
     def __init__(self, json_file) -> None:
         self.json_file = json_file
         self.csv_file = get_file_path(
