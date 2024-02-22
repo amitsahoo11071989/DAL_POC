@@ -42,7 +42,7 @@ class JsonValidation:
 
             table_with_non_matching_columns = {}
             for table in data["table_column_mapping"].keys():
-                column_list = []
+                actual_column_list = []
 
                 show_table_query = template.render(
                     database=database, schema=schema, table=table
@@ -50,13 +50,14 @@ class JsonValidation:
 
                 sc = SnowflakeUtils()
                 result = sc.execute_query(show_table_query)
-
                 for row in result:
-                    column_list.append(row[2])
+                    actual_column_list.append(row[2])
 
                 given_columns = data["table_column_mapping"][table]
+                complete_given_columns = sum(list(map(lambda x: x.split('AS')[0].split('+') ,given_columns)),[])
+                complete_given_columns = [i.strip() for i in complete_given_columns]
 
-                non_matching_columns = list(set(given_columns) - set(column_list))
+                non_matching_columns = list(set(complete_given_columns) - set(actual_column_list))
 
                 table_with_non_matching_columns[table] = non_matching_columns
 

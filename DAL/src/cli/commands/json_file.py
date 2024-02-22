@@ -56,6 +56,20 @@ class SqlGenerator:
         rendered_query = template.render(config=json_data, sql_query=sql_query)
 
         return "".join(rendered_query)
+    
+    def transformations(self,row):
+
+        if 'AS' in row['Column Name']:
+            col_prefix = row['Column Name'].split('AS')[0]
+            col_suffix = row['Column Name'].split('AS')[1]
+            if '+' in col_prefix:
+                return  f"""CONCAT({', '.join(list(map(lambda x: f"{row['Database']}.{row['Schema']}.{row['Table']}.{x}" ,col_prefix.split('+'))))}) AS {col_suffix}"""
+            else :
+                return  f"{row['Database']}.{row['Schema']}.{row['Table']}.{col_prefix} AS {col_suffix}"
+        else:
+            return ("Please provide a target name for concatenated column")
+
+
 
     def generate_sql_query(self, data, relationships_df):
         """
@@ -87,10 +101,9 @@ class SqlGenerator:
         df["Schema"] = [schema for _ in range(len(columns))]
 
         df["Full Name"] = df.apply(
-            lambda row: f"{row['Database']}.{row['Schema']}.{row['Table']}.{row['Column Name']}",
-            axis=1,
+            lambda row: self.transformations(row) if '+' in row['Column Name'] or 'AS' in row['Column Name'] 
+            else f"{row['Database']}.{row['Schema']}.{row['Table']}.{row['Column Name']}" ,axis=1,
         )
-
         result_df = pd.concat([result_df, df])
 
         result_df.reset_index(drop=True, inplace=True)

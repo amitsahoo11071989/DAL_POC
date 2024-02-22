@@ -8,8 +8,8 @@
             "schema": "EDW",
             "table_column_mapping": {
                 "CLAIM": [
-                    "CLAIM_ID",
-                    "CLAIM_NUMBER",
+                    "CLAIM_ID AS clm_id",
+                    "CLAIM_NUMBER+POLICY_NUMBER AS CLAIM_POL",
                     "LOSS_DATE",
                     "REPORTED_TO_INSURER_DATE",
                     "LOSS_DESCRIPTION",
