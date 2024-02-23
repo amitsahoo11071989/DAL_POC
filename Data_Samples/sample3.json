@@ -1,5 +1,5 @@
 {
-    "target_table_name": "CLAIM_TESTING_9",
+    "target_table_name": "CLAIM_TESTING_1",
     "target_lag": "300",
     "warehouse": "DAL_ALL_IT_CONSUMER_WH",
     "source_data": [
@@ -9,8 +9,8 @@
             "table_column_mapping": {
                 "CLAIM": [
                     "CLAIM_ID AS clm_id",
-                    "CLAIM_NUMBER+POLICY_NUMBER AS CLAIM_POL",
-                    "LOSS_DATE",
+                    "LOWER?CLAIM_NUMBER+POLICY_NUMBER AS CLAIM_POL",
+                    "YEAR?LOSS_DATE",
                     "REPORTED_TO_INSURER_DATE",
                     "LOSS_DESCRIPTION",
                     "OPEN_DATE",

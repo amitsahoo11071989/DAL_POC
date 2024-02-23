@@ -60,8 +60,7 @@ class SqlGenerator:
     def transformations(self,row):
 
         if 'AS' in row['Column Name']:
-            col_prefix = row['Column Name'].split('AS')[0]
-            col_suffix = row['Column Name'].split('AS')[1]
+            col_prefix ,col_suffix= row['Column Name'].split('AS')
             if '+' in col_prefix:
                 return  f"""CONCAT({', '.join(list(map(lambda x: f"{row['Database']}.{row['Schema']}.{row['Table']}.{x}" ,col_prefix.split('+'))))}) AS {col_suffix}"""
             else :

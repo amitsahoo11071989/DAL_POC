@@ -1,6 +1,6 @@
 SELECT {{' '}}
 {%- for data in config -%}
-    {{data}}{{', '}}
+    {{data}}{{', ' if not loop.last}}
 {%- endfor -%}{{' '}}
 FROM {{ json_tables[0] }}
 {{joins_string}}
