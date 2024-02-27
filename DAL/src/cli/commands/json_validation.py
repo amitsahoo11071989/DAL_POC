@@ -11,12 +11,12 @@ from utilities.snowflake_connector import SnowflakeUtils
 
 
 class JsonValidation:
-    def __init__(self, json_data) -> None:
+    def __init__(self, json_data, templates_file_path, sql_command):
         self.json_data = json_data
+        self.templates_file_path = templates_file_path
+        self.sql_command = sql_command
 
     def validate_json_format(self):
-        
-
         try:
             JsonStructure(**self.json_data)
         except Exception as e:
@@ -30,56 +30,59 @@ class JsonValidation:
         Args:
             json_data (JsonValidation): The JSON configuration data containing database, schema details.
         """
-        templates_file_path = get_file_path(
-            path=str(os.path.dirname(__file__)), levels=2, file_name="templates"
-        )
-
-        env = Environment(loader=FileSystemLoader(templates_file_path))
+        env = Environment(loader=FileSystemLoader(self.templates_file_path))
         template = env.get_template("template_show_columns.jinja")
 
-        for data in self.json_data["source_data"]:
-            database = data["database"]
-            schema = data["schema"]
+        print(self.sql_command)
 
-            table_with_non_matching_columns = {}
-            for table in data["table_column_mapping"].keys():
-                actual_column_list = []
+        anchor_words = ["FROM", "JOIN"]
 
-                show_table_query = template.render(
-                    database=database, schema=schema, table=table
-                )
+        for anchor in anchor_words:
+            res = self.sql_command[self.sql_command.find(anchor)+len(anchor):]
 
-                sc = SnowflakeUtils()
-                result = sc.execute_query(show_table_query)
+        # for data in self.json_data["source_data"]:
+        #     database = data["database"]
+        #     schema = data["schema"]
 
-                for row in result:
-                    actual_column_list.append(row[2])
+        #     table_with_non_matching_columns = {}
+        #     for table in data["table_column_mapping"].keys():
+        #         actual_column_list = []
 
-                given_columns = list(map(lambda column: column.split()[0],
-                                     data["table_column_mapping"][table]))
+        #         show_table_query = template.render(
+        #             database=database, schema=schema, table=table
+        #         )
 
-                non_matching_columns = list(set(given_columns) - set(actual_column_list))
+        #         sc = SnowflakeUtils()
+        #         result = sc.execute_query(show_table_query)
 
-                table_with_non_matching_columns[table] = non_matching_columns
+        #         for row in result:
+        #             actual_column_list.append(row[2])
 
-        spelling_check_bool = [
-            True if len(x) > 0 else False
-            for x in table_with_non_matching_columns.values()
-        ]
+        #         given_columns = list(map(lambda column: column.split()[0],
+        #                              data["table_column_mapping"][table]))
 
-        if True in spelling_check_bool:
-            error_mesg = ""
-            for table, columns in table_with_non_matching_columns.items():
-                if columns:
-                    error_mesg = (
-                        error_mesg
-                        + f"\n {table} table does not have {str(columns)[1:-1]} columns\n"
-                    )
-            sys.stdout.write(error_mesg)
-            sys.exit()
+        #         non_matching_columns = list(set(given_columns) - set(actual_column_list))
+
+        #         table_with_non_matching_columns[table] = non_matching_columns
+
+        # spelling_check_bool = [
+        #     True if len(x) > 0 else False
+        #     for x in table_with_non_matching_columns.values()
+        # ]
+
+        # if True in spelling_check_bool:
+        #     error_mesg = ""
+        #     for table, columns in table_with_non_matching_columns.items():
+        #         if columns:
+        #             error_mesg = (
+        #                 error_mesg
+        #                 + f"\n {table} table does not have {str(columns)[1:-1]} columns\n"
+        #             )
+        #     sys.stdout.write(error_mesg)
+        #     sys.exit()
 
     def run(self):
         self.validate_json_format()
-        self.validate_json_column()
+        #self.validate_json_column()
 
     __call__ = run

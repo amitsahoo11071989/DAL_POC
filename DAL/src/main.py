@@ -22,10 +22,12 @@ def main():
 
     args = InputParser().argument_parser()
 
+    print(os.getlogin())
+
     json_file = get_file_path(
         path=str(os.path.dirname(__file__)),
         levels=2,
-        file_name="Data_Samples/sample3.json",
+        file_name="Data_Samples/claim.json",
     )
 
     sql_generator = SqlGenerator(

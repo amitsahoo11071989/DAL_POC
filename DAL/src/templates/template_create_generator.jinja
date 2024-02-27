@@ -1,8 +1,5 @@
 CREATE DYNAMIC TABLE INFO_ACCESS_LAYER_DEV.ARGO_PRO.{{config["target_table_name"]}}
 TARGET_LAG = {{"\'"}}{{config["target_lag"]}}{{"\'"}}
 WAREHOUSE = {{"\'"}}{{config["warehouse"]}}{{"\'"}}
-AS{{"\n"}}
-{%- for query in sql_query -%}
-    {{query}}
-{%- endfor -%}{{' '}}
-LIMIT 100;
+AS
+{{sql}}

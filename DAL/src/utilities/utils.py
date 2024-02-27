@@ -43,6 +43,28 @@ def read_json(json_file):
             return config
     except Exception as e:
         raise CustomException(e)
+    
+
+
+def read_sql(sql_file_path):
+    """
+    Reads the .sql file in read mode.
+
+    Args:
+        sql_file_path (str): Path to the .sql file.
+
+    Raises:
+        CustomException: Function of the Custom Exception function. Found at DAL>utilities>exceptions.py
+
+    Returns:
+        str: Query mentioned in the .sql file
+    """
+    try:
+        with open(sql_file_path, "r") as sql_file:
+            sql_command = sql_file.read()
+            return sql_command
+    except Exception as e:
+        raise CustomException(e)
 
 
 def get_full_relationship(df):

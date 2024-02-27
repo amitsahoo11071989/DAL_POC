@@ -1,0 +1,6 @@
+{
+    "target_table_name": "CLAIM_1",
+    "target_lag": "300",
+    "warehouse": "DAL_ALL_IT_CONSUMER_WH",
+    "source_sql": "claim.sql"
+}
