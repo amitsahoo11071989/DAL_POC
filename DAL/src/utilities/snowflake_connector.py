@@ -59,5 +59,6 @@ class SnowflakeUtils:
             raise CustomException(e)
 
         finally:
-            cursor.close()
-            self.close_connection(conn)
+            if 'conn' in locals():
+                cursor.close()
+                self.close_connection(conn)

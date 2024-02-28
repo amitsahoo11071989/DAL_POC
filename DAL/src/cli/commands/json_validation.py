@@ -1,5 +1,6 @@
 import sys
 import os
+import re
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -33,37 +34,52 @@ class JsonValidation:
         env = Environment(loader=FileSystemLoader(self.templates_file_path))
         template = env.get_template("template_show_columns.jinja")
 
-        print(self.sql_command)
+        #print(self.sql_command)
 
-        anchor_words = ["FROM", "JOIN"]
+        # anchor_words = ["FROM", "JOIN"]
 
-        for anchor in anchor_words:
-            res = self.sql_command[self.sql_command.find(anchor)+len(anchor):]
+        # for anchor in anchor_words:
+        #     res = self.sql_command[self.sql_command.find(anchor)+len(anchor):]
 
-        # for data in self.json_data["source_data"]:
-        #     database = data["database"]
-        #     schema = data["schema"]
+        column_pattern = r'\w++\.+\w+'
+        table_pattern = r'\w++\.+\w++\.+\w++\s+\w+'
+        columns =set( re.findall(column_pattern,self.sql_command))
+        tables = set(re.findall(table_pattern,self.sql_command))
+        table_column_mapping={}
 
-        #     table_with_non_matching_columns = {}
-        #     for table in data["table_column_mapping"].keys():
-        #         actual_column_list = []
+        for i in tables:
+            name,short_form = i.split()
+            col_pattern = r'{}+\.+\w+'.format(short_form)
+            col_list=[]
+            for j in columns:
+                if re.match(col_pattern,j):
+                    col_list.append(j.split('.')[1])
+            table_column_mapping[name]=col_list
+        print(table_column_mapping)
 
-        #         show_table_query = template.render(
-        #             database=database, schema=schema, table=table
-        #         )
+        # # for data in self.json_data["source_data"]:
+        # #     database = data["database"]
+        # #     schema = data["schema"]
 
-        #         sc = SnowflakeUtils()
-        #         result = sc.execute_query(show_table_query)
+        # table_with_non_matching_columns = {}
+        # for table in table_column_mapping.keys():
+        #     actual_column_list = []
 
-        #         for row in result:
-        #             actual_column_list.append(row[2])
+        #     show_table_query = template.render(
+        #         table=table
+        #     )
 
-        #         given_columns = list(map(lambda column: column.split()[0],
-        #                              data["table_column_mapping"][table]))
+        #     sc = SnowflakeUtils()
+        #     result = sc.execute_query(show_table_query)
 
-        #         non_matching_columns = list(set(given_columns) - set(actual_column_list))
+        #     for row in result:
+        #         actual_column_list.append(row[2])
 
-        #         table_with_non_matching_columns[table] = non_matching_columns
+        #     given_columns = table_column_mapping[table]
+
+        #     non_matching_columns = list(set(given_columns) - set(actual_column_list))
+
+        #     table_with_non_matching_columns[table] = non_matching_columns
 
         # spelling_check_bool = [
         #     True if len(x) > 0 else False
@@ -82,7 +98,7 @@ class JsonValidation:
         #     sys.exit()
 
     def run(self):
-        self.validate_json_format()
-        #self.validate_json_column()
+        #self.validate_json_format()
+        self.validate_json_column()
 
     __call__ = run
