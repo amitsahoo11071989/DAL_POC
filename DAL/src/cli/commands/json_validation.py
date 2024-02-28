@@ -55,47 +55,47 @@ class JsonValidation:
                 if re.match(col_pattern,j):
                     col_list.append(j.split('.')[1])
             table_column_mapping[name]=col_list
-        print(table_column_mapping)
+        #print(table_column_mapping)
 
-        # # for data in self.json_data["source_data"]:
-        # #     database = data["database"]
-        # #     schema = data["schema"]
+        # for data in self.json_data["source_data"]:
+        #     database = data["database"]
+        #     schema = data["schema"]
 
-        # table_with_non_matching_columns = {}
-        # for table in table_column_mapping.keys():
-        #     actual_column_list = []
+        table_with_non_matching_columns = {}
+        for table in table_column_mapping.keys():
+            actual_column_list = []
 
-        #     show_table_query = template.render(
-        #         table=table
-        #     )
+            show_table_query = template.render(
+                table=table
+            )
 
-        #     sc = SnowflakeUtils()
-        #     result = sc.execute_query(show_table_query)
+            sc = SnowflakeUtils()
+            result = sc.execute_query(show_table_query)
 
-        #     for row in result:
-        #         actual_column_list.append(row[2])
+            for row in result:
+                actual_column_list.append(row[2])
 
-        #     given_columns = table_column_mapping[table]
+            given_columns = table_column_mapping[table]
 
-        #     non_matching_columns = list(set(given_columns) - set(actual_column_list))
+            non_matching_columns = list(set(given_columns) - set(actual_column_list))
 
-        #     table_with_non_matching_columns[table] = non_matching_columns
+            table_with_non_matching_columns[table] = non_matching_columns
 
-        # spelling_check_bool = [
-        #     True if len(x) > 0 else False
-        #     for x in table_with_non_matching_columns.values()
-        # ]
+        spelling_check_bool = [
+            True if len(x) > 0 else False
+            for x in table_with_non_matching_columns.values()
+        ]
 
-        # if True in spelling_check_bool:
-        #     error_mesg = ""
-        #     for table, columns in table_with_non_matching_columns.items():
-        #         if columns:
-        #             error_mesg = (
-        #                 error_mesg
-        #                 + f"\n {table} table does not have {str(columns)[1:-1]} columns\n"
-        #             )
-        #     sys.stdout.write(error_mesg)
-        #     sys.exit()
+        if True in spelling_check_bool:
+            error_mesg = ""
+            for table, columns in table_with_non_matching_columns.items():
+                if columns:
+                    error_mesg = (
+                        error_mesg
+                        + f"\n {table} table does not have {str(columns)[1:-1]} columns\n"
+                    )
+            sys.stdout.write(error_mesg)
+            sys.exit()
 
     def run(self):
         #self.validate_json_format()
